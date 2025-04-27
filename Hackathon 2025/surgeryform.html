@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Surgery Information Portal</title>
+  <link rel="stylesheet" href="surgerystylesheet.css">
+</head>
+<body>
+
+  <div class="container">
+    <h1>Find Your Surgery Details</h1>
+
+    <form id="surgeryForm">
+      <label for="surgeryType">Choose a surgery:</label>
+      <select id="surgeryType">
+        <option value="">--Select--</option>
+        <option value="appendectomy">Appendectomy</option>
+        <option value="kneeReplacement">Knee Replacement</option>
+        <option value="cataractSurgery">Cataract Surgery</option>
+      </select>
+
+      <div id="surgeryInfo" class="info-box hidden">
+        <!-- Info will appear here -->
+      </div>
+
+      <label for="insuranceType">Choose your insurance:</label>
+      <select id="insuranceType">
+        <option value="">--Select--</option>
+        <option value="standard">Standard Insurance</option>
+        <option value="premium">Premium Insurance</option>
+        <option value="none">No Insurance</option>
+      </select>
+
+      <div id="costInfo" class="info-box hidden">
+        <!-- Cost info will appear here -->
+      </div>
+    </form>
+  </div>
+
+  <!-- Place the script **after** the HTML -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+
+      const surgeryDetails = {
+        appendectomy: {
+          description: "Removal of the appendix. Typically urgent surgery.",
+          duration: "1 hour",
+        },
+        kneeReplacement: {
+          description: "Replacing a damaged knee joint with an artificial one.",
+          duration: "2-3 hours",
+        },
+        cataractSurgery: {
+          description: "Procedure to remove clouded lens from the eye.",
+          duration: "30-45 minutes",
+        }
+      };
+
+      const costDetails = {
+        standard: {
+          appendectomy: "$5,000",
+          kneeReplacement: "$15,000",
+          cataractSurgery: "$3,000",
+        },
+        premium: {
+          appendectomy: "$2,500",
+          kneeReplacement: "$7,000",
+          cataractSurgery: "$1,500",
+        },
+        none: {
+          appendectomy: "$10,000",
+          kneeReplacement: "$30,000",
+          cataractSurgery: "$6,000",
+        }
+      };
+
+      const surgerySelect = document.getElementById('surgeryType');
+      const insuranceSelect = document.getElementById('insuranceType');
+      const surgeryInfoDiv = document.getElementById('surgeryInfo');
+      const costInfoDiv = document.getElementById('costInfo');
+
+      surgerySelect.addEventListener('change', function() {
+        const selected = surgerySelect.value;
+        if (selected) {
+          surgeryInfoDiv.classList.remove('hidden');
+          surgeryInfoDiv.innerHTML = `
+            <h2>About the Surgery</h2>
+            <p><strong>Description:</strong> ${surgeryDetails[selected].description}</p>
+            <p><strong>Duration:</strong> ${surgeryDetails[selected].duration}</p>
+          `;
+        } else {
+          surgeryInfoDiv.classList.add('hidden');
+          surgeryInfoDiv.innerHTML = '';
+        }
+        costInfoDiv.classList.add('hidden');
+        costInfoDiv.innerHTML = '';
+      });
+
+      insuranceSelect.addEventListener('change', function() {
+        const selectedInsurance = insuranceSelect.value;
+        const selectedSurgery = surgerySelect.value;
+        if (selectedInsurance && selectedSurgery) {
+          costInfoDiv.classList.remove('hidden');
+          costInfoDiv.innerHTML = `
+            <h2>Cost Estimate</h2>
+            <p><strong>Estimated Cost:</strong> ${costDetails[selectedInsurance][selectedSurgery]}</p>
+          `;
+        } else {
+          costInfoDiv.classList.add('hidden');
+          costInfoDiv.innerHTML = '';
+        }
+      });
+
+    });
+  </script>
+
+</body>
+</html>
+
